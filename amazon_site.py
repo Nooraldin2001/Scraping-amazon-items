@@ -11,7 +11,7 @@ def main():
     productlinks = []
     productdict = []
 
-    for x in range(1, 15):
+    for x in range(1, 3):
         site = requests.get(f'https://www.amazon.eg/s?i=electronics&rh=n%3A21832907031&fs=true&qid=1712544597&ref=sr_pg_{x}', headers=headers, timeout=10)
         soup = BeautifulSoup(site.content, 'lxml')
         productlist = soup.find_all('div', class_='s-asin')
@@ -63,6 +63,12 @@ def main():
                 print(f"Error scraping product from {link}: {e}")
 
     item_scraping(productlinks=productlinks)
-    print(productdict)
 
+    keys = productdict[0].keys()
+    with open('C:/Noor_work/Projects/Wep_Scraping/Scraping-amazon-items/product_file.csv', 'w', encoding='UTF-8') as product_file:
+
+        dict_writer = csv.DictWriter(product_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(productdict)
+        print("file created successfully")
 main()
